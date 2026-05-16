@@ -1,55 +1,48 @@
-import useFetch
-from "../hooks/useFetch";
-
-import ProductCard
-from "../components/ProductCard";
+import React from "react";
+import ProductCard from "../components/ProductCard.jsx";
+import useFetch from "../hooks/useFetch.jsx";
+import Loader from "../components/Loader.jsx";
 
 function Home() {
+  const { data, loading, error } = useFetch(
+    "https://fakestoreapi.com/products"
+  );
 
-    const {
-        data: products,
-        loading,
-        error
-    } = useFetch(
-        "https://fakestoreapi.com/products"
-    );
+  if (loading) return <Loader />;
+  if (error) return <h2>Error: {error}</h2>;
 
-    if (loading) {
+  return (
+    <div style={styles.container}>
+      <h1>Products</h1>
 
-        return <h1>Loading...</h1>;
-    }
-
-    if (error) {
-
-        return <h1>{error}</h1>;
-    }
-
-    return (
-
-        <div>
-
-            <h1>All Products</h1>
-
-            <div style={{
-                display: "grid",
-                gridTemplateColumns:
-                    "repeat(4, 1fr)",
-                gap: "20px"
-            }}>
-
-                {products.map((product) => (
-
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                    />
-
-                ))}
-
-            </div>
-
-        </div>
-    );
+      <div style={styles.grid}>
+        {data.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={{
+              id: product.id,
+              name: product.title,
+              price: product.price,
+              image: product.image,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
+
+const styles = {
+  container: {
+    padding: "20px",
+    textAlign: "center",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gap: "20px",
+    marginTop: "20px",
+  },
+};
 
 export default Home;
