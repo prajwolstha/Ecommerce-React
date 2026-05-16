@@ -5,9 +5,11 @@ import { BrowserRouter } from "react-router-dom";
 
 import { CartProvider } from "./context/CartContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
-import { ThemeProvider } from "./context/ThemeContext.jsx";
+import ThemeProvider from "./context/ThemeContext.jsx";
+import { WishlistProvider } from "./context/WishlistContext.jsx";
+import { OrderProvider } from "./context/OrderContext.jsx";
 
-import "./index.css"; // optional global styles
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,7 +17,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ThemeProvider>
         <AuthProvider>
           <CartProvider>
-            <App />
+            <WishlistProvider>
+              <OrderProvider>
+                <App />
+              </OrderProvider>
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </ThemeProvider>

@@ -1,15 +1,31 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar.jsx";
+
 function MainLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div style={styles.wrapper}>
+      {/* Navbar always visible */}
       <Navbar />
 
-      <main className="flex-1">
+      {/* Page content */}
+      <main style={styles.main}>
         <Outlet />
       </main>
-
-      <footer className="text-center p-4">
-        © {new Date().getFullYear()} My E-Commerce Store
-      </footer>
     </div>
   );
 }
+
+const styles = {
+  wrapper: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  main: {
+    flex: 1,
+    padding: "10px",
+  },
+};
+
+export default MainLayout;
