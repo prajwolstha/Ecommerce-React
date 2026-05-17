@@ -131,8 +131,8 @@ function Checkout() {
               <h3 style={styles.cardTitle}>Payment Method</h3>
               {[
                 { value: "cod", label: "💵 Cash on Delivery", desc: "Pay when your order arrives" },
-                { value: "upi", label: "📱 UPI", desc: "Google Pay, PhonePe, Paytm" },
-                { value: "card", label: "💳 Credit / Debit Card", desc: "Visa, Mastercard, RuPay" },
+                { value: "Wallet", label: "📱 Wallet", desc: "Esewa, Khalti, NepalPay,Stripes" },
+                { value: "card", label: "💳 Credit / Debit Card", desc: "Visa, Mastercard" },
               ].map(({ value, label, desc }) => (
                 <label key={value} style={{
                   ...styles.paymentOption,
@@ -180,7 +180,7 @@ function Checkout() {
                 {cartItems.map((item) => (
                   <div key={item.id} style={styles.reviewItem}>
                     <span>{item.name.substring(0, 30)}...</span>
-                    <span>×{item.quantity} = NPR{(item.price * 83 * item.quantity).toFixed(0)}</span>
+                    <span>×{item.quantity} = NPR{(item.price * 150 * item.quantity).toFixed(0)}</span>
                   </div>
                 ))}
               </div>
@@ -205,17 +205,17 @@ function Checkout() {
                   <p style={styles.summaryName}>{item.name.substring(0, 25)}...</p>
                   <p style={styles.summaryQty}>Qty: {item.quantity}</p>
                 </div>
-                <span style={styles.summaryPrice}>NPR{(item.price * 83 * item.quantity).toFixed(0)}</span>
+                <span style={styles.summaryPrice}>NPR{(item.price * 150 * item.quantity).toFixed(0)}</span>
               </div>
             ))}
             <div style={styles.divider} />
-            <div style={styles.summaryRow}><span>Subtotal</span><span>NPR{(totalPrice * 83).toFixed(0)}</span></div>
-            <div style={styles.summaryRow}><span>Delivery</span><span>{deliveryFee === 0 ? <span style={{ color: "#22c55e" }}>FREE</span> : `NPR${deliveryFee * 83}`}</span></div>
-            <div style={styles.summaryRow}><span>GST (18%)</span><span>NPR{(tax * 83).toFixed(0)}</span></div>
+            <div style={styles.summaryRow}><span>Subtotal</span><span>NPR{(totalPrice * 150).toFixed(0)}</span></div>
+            <div style={styles.summaryRow}><span>Delivery</span><span>{deliveryFee === 0 ? <span style={{ color: "#22c55e" }}>FREE</span> : `NPR${deliveryFee * 150}`}</span></div>
+            <div style={styles.summaryRow}><span>Tax (13%)</span><span>NPR{(tax * 150).toFixed(0)}</span></div>
             <div style={styles.divider} />
             <div style={{ ...styles.summaryRow, fontWeight: "700", fontSize: "16px" }}>
               <span>Total</span>
-              <span>NPR{(grandTotal * 83).toFixed(0)}</span>
+              <span>NPR{(grandTotal * 150).toFixed(0)}</span>
             </div>
             {deliveryFee === 0 && (
               <p style={styles.freeShip}>🎉 You qualify for free delivery!</p>

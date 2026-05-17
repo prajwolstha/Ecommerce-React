@@ -17,7 +17,7 @@ function Cart() {
     );
   }
 
-  const deliveryFee = totalPrice > 500 ? 0 : 49;
+  const deliveryFee = totalPrice > 500 ? 0 : 10;
   const tax = +(totalPrice * 0.13).toFixed(2);
   const grandTotal = +(totalPrice + deliveryFee + tax).toFixed(2);
 
@@ -37,7 +37,7 @@ function Cart() {
                 <Link to={`/product/${item.id}`} style={styles.nameLink}>
                   <p style={styles.name}>{item.name}</p>
                 </Link>
-                <p style={styles.price}>NPR{(item.price * 83).toFixed(0)} <span style={styles.priceUsd}>(${item.price})</span></p>
+                <p style={styles.price}>NPR{(item.price * 150).toFixed(0)} <span style={styles.priceUsd}>(${item.price})</span></p>
 
                 {/* Qty Controls */}
                 <div style={styles.qtyRow}>
@@ -48,7 +48,7 @@ function Cart() {
                 </div>
               </div>
               <div style={styles.itemTotal}>
-                NPR{(item.price * 83 * item.quantity).toFixed(0)}
+                NPR{(item.price * 150 * item.quantity).toFixed(0)}
               </div>
             </div>
           ))}
@@ -62,28 +62,28 @@ function Cart() {
 
           <div style={styles.summaryRow}>
             <span>Subtotal</span>
-            <span>NPR{(totalPrice * 83).toFixed(0)}</span>
+            <span>NPR{(totalPrice * 150).toFixed(0)}</span>
           </div>
           <div style={styles.summaryRow}>
             <span>Delivery</span>
-            <span>{deliveryFee === 0 ? <span style={{ color: "#22c55e", fontWeight: "600" }}>FREE</span> : `NPR${deliveryFee * 83}`}</span>
+            <span>{deliveryFee === 0 ? <span style={{ color: "#22c55e", fontWeight: "600" }}>FREE</span> : `NPR${deliveryFee * 150}`}</span>
           </div>
           <div style={styles.summaryRow}>
             <span>TAX (13%)</span>
-            <span>NPR{(tax * 83).toFixed(0)}</span>
+            <span>NPR{(tax * 150).toFixed(0)}</span>
           </div>
 
           {deliveryFee === 0 && (
             <p style={styles.freeShip}>🎉 Free delivery applied!</p>
           )}
           {deliveryFee > 0 && (
-            <p style={styles.freeShipTip}>Add NPR{((500 - totalPrice) * 83).toFixed(0)} more for free delivery</p>
+            <p style={styles.freeShipTip}>Add NPR{((500 - totalPrice) * 150).toFixed(0)} more for free delivery</p>
           )}
 
           <div style={styles.divider} />
           <div style={{ ...styles.summaryRow, fontWeight: "700", fontSize: "17px" }}>
             <span>Total</span>
-            <span>NPR{(grandTotal * 83).toFixed(0)}</span>
+            <span>NPR{(grandTotal * 150).toFixed(0)}</span>
           </div>
 
           <button onClick={() => navigate("/checkout")} style={styles.checkoutBtn}>

@@ -53,7 +53,7 @@ function ProductDetails() {
 
           {/* Price */}
           <div style={styles.priceBlock}>
-            <span style={styles.price}>NPR{(product.price * 83).toFixed(0)}</span>
+            <span style={styles.price}>NPR{(product.price * 150).toFixed(0)}</span>
             <span style={styles.priceUsd}>(${product.price})</span>
           </div>
 

@@ -29,7 +29,7 @@ function ProductCard({ product }) {
 
   const rating = ((product.price % 2) + 3.5).toFixed(1);
   const stars = Math.min(5, Math.max(1, Math.round(parseFloat(rating))));
-  const priceInr = (product.price * 83).toFixed(0);
+  const priceInr = (product.price * 150).toFixed(0);
 
   return (
     <Link to={`/product/${product.id}`} style={styles.cardLink}>

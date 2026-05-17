@@ -47,7 +47,7 @@ function Orders() {
                     <img src={item.image} alt={item.name} style={styles.img} />
                     <div style={styles.itemInfo}>
                       <p style={styles.itemName}>{item.name}</p>
-                      <p style={styles.itemMeta}>Qty: {item.quantity} · NPR{(item.price * 83 * item.quantity).toFixed(0)}</p>
+                      <p style={styles.itemMeta}>Qty: {item.quantity} · NPR{(item.price * 150 * item.quantity).toFixed(0)}</p>
                     </div>
                   </div>
                 ))}
@@ -58,7 +58,7 @@ function Orders() {
                   📍 {order.shippingInfo?.address}, {order.shippingInfo?.city}
                 </div>
                 <div style={styles.total}>
-                  Total: <strong>NPR{(order.total * 83).toFixed(0)}</strong>
+                  Total: <strong>NPR{(order.total * 150).toFixed(0)}</strong>
                 </div>
               </div>
             </div>
