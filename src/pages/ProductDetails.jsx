@@ -53,14 +53,14 @@ function ProductDetails() {
 
           {/* Price */}
           <div style={styles.priceBlock}>
-            <span style={styles.price}>₹{(product.price * 83).toFixed(0)}</span>
+            <span style={styles.price}>NPR{(product.price * 83).toFixed(0)}</span>
             <span style={styles.priceUsd}>(${product.price})</span>
           </div>
 
           {/* Tags */}
           <div style={styles.tags}>
             <span style={styles.tag}>✅ In Stock</span>
-            <span style={styles.tag}>🚚 Free delivery on orders over ₹41,500</span>
+            <span style={styles.tag}>🚚 Free delivery on orders over NPR41,500</span>
             <span style={styles.tag}>↩️ 30-day returns</span>
           </div>
 

@@ -1,179 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext.jsx";
-import { useWishlist } from "../context/WishlistContext.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
+import ProductCard from "../components/ProductCard.jsx";
+import useFetch from "../hooks/useFetch.jsx";
+import Loader from "../components/Loader.jsx";
 
-function ProductCard({ product }) {
-  const { addToCart } = useCart();
-  const { toggleWishlist, isWishlisted } = useWishlist();
-  const { user } = useAuth();
-  const wishlisted = isWishlisted(product.id);
+const CATEGORIES = ["all", "men's clothing", "women's clothing", "electronics", "jewelery"];
 
-  const handleWishlist = (e) => {
-    e.preventDefault();
-    if (!user) return;
-    toggleWishlist(product);
-  };
+function Home() {
+  const { data, loading, error } = useFetch("https://fakestoreapi.com/products");
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    addToCart(product);
-  };
+  const normalize = (p) => ({
+    id: p.id,
+    name: p.title,
+    price: p.price,
+    image: p.image,
+    category: p.category,
+  });
 
-  // Generate a stable star rating from price (just for display)
-  const rating = (((product.price % 2) + 3.5)).toFixed(1);
-  const stars = Math.round(parseFloat(rating));
+  const filtered = (data || [])
+    .map(normalize)
+    .filter((p) => activeCategory === "all" || p.category === activeCategory);
 
   return (
-    <Link to={`/product/${product.id}`} style={styles.cardLink}>
-      <div style={styles.card}>
-        {/* Wishlist Button */}
-        {user && (
+    <div style={styles.page}>
+      {/* Hero Banner */}
+      <div style={styles.hero}>
+        <div style={styles.heroContent}>
+          <h1 style={styles.heroTitle}>Discover Amazing Products</h1>
+          <p style={styles.heroSub}>Shop the latest trends across electronics, fashion, jewellery & more</p>
+          <Link to="/search" style={styles.heroBtn}>Browse All →</Link>
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div style={styles.categoryBar}>
+        {CATEGORIES.map((cat) => (
           <button
-            onClick={handleWishlist}
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
             style={{
-              ...styles.wishlistBtn,
-              color: wishlisted ? "#ff4757" : "#aaa",
+              ...styles.catBtn,
+              backgroundColor: activeCategory === cat ? "#0f0f0f" : "#f0f0f0",
+              color: activeCategory === cat ? "#fff" : "#333",
             }}
           >
-            {wishlisted ? "♥" : "♡"}
+            {cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
-        )}
-
-        {/* Product Image */}
-        <div style={styles.imageWrap}>
-          <img src={product.image} alt={product.name} style={styles.image} />
-        </div>
-
-        {/* Info */}
-        <div style={styles.info}>
-          <p style={styles.title}>{product.name}</p>
-
-          <div style={styles.ratingRow}>
-            <span style={styles.stars}>{"★".repeat(stars)}{"☆".repeat(5 - stars)}</span>
-            <span style={styles.ratingNum}>{rating}</span>
-          </div>
-
-          <div style={styles.priceRow}>
-            <span style={styles.price}>₹{(product.price * 83).toFixed(0)}</span>
-            <span style={styles.priceUsd}>(${product.price})</span>
-          </div>
-        </div>
-
-        {/* Add to Cart */}
-        <button onClick={handleAddToCart} style={styles.addBtn}>
-          Add to Cart
-        </button>
+        ))}
       </div>
-    </Link>
+
+      {loading && <Loader />}
+      {error && <p style={{ color: "red", textAlign: "center" }}>Error: {error}</p>}
+
+      <div style={styles.grid}>
+        {filtered.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
   );
 }
 
 const styles = {
-  cardLink: {
-    textDecoration: "none",
-    color: "inherit",
-  },
-  card: {
-    position: "relative",
-    backgroundColor: "#fff",
-    border: "1px solid #eee",
-    borderRadius: "12px",
-    padding: "14px",
+  page: { padding: "0 0 32px" },
+  hero: {
+    background: "linear-gradient(135deg, #0f0f0f 0%, #2d1b69 100%)",
+    padding: "56px 32px",
     textAlign: "center",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-    transition: "transform 0.2s, box-shadow 0.2s",
-    cursor: "pointer",
-    height: "100%",
+    marginBottom: "0",
   },
-  wishlistBtn: {
-    position: "absolute",
-    top: "10px",
-    right: "12px",
-    background: "none",
-    border: "none",
-    fontSize: "20px",
-    cursor: "pointer",
-    lineHeight: 1,
-    padding: 0,
-    zIndex: 1,
-  },
-  imageWrap: {
-    height: "160px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
-    padding: "8px",
-  },
-  image: {
-    maxWidth: "100%",
-    maxHeight: "140px",
-    objectFit: "contain",
-  },
-  info: {
-    flex: 1,
-    textAlign: "left",
-  },
-  title: {
-    fontSize: "13px",
-    fontWeight: "500",
-    color: "#222",
-    margin: "0 0 4px",
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    lineHeight: "1.4",
-  },
-  ratingRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    marginBottom: "4px",
-  },
-  stars: {
-    color: "#f5a623",
-    fontSize: "12px",
-    letterSpacing: "1px",
-  },
-  ratingNum: {
-    fontSize: "12px",
-    color: "#888",
-  },
-  priceRow: {
-    display: "flex",
-    alignItems: "baseline",
-    gap: "6px",
-  },
-  price: {
-    fontSize: "16px",
-    fontWeight: "700",
-    color: "#1a1a1a",
-  },
-  priceUsd: {
-    fontSize: "12px",
-    color: "#aaa",
-  },
-  addBtn: {
-    marginTop: "4px",
-    padding: "9px",
-    width: "100%",
-    border: "none",
-    backgroundColor: "#0f0f0f",
+  heroContent: {},
+  heroTitle: { margin: "0 0 12px", fontSize: "40px", fontWeight: "800", color: "#fff", lineHeight: 1.2 },
+  heroSub: { margin: "0 0 24px", color: "#ccc", fontSize: "16px" },
+  heroBtn: {
+    display: "inline-block",
+    padding: "12px 28px",
+    backgroundColor: "#6c47ff",
     color: "#fff",
-    cursor: "pointer",
-    borderRadius: "7px",
-    fontSize: "13px",
-    fontWeight: "600",
-    transition: "background-color 0.2s",
+    textDecoration: "none",
+    borderRadius: "8px",
+    fontWeight: "700",
+    fontSize: "15px",
+  },
+  categoryBar: { display: "flex", gap: "10px", flexWrap: "wrap", padding: "20px 24px", backgroundColor: "#fff", borderBottom: "1px solid #eee" },
+  catBtn: { padding: "7px 16px", borderRadius: "20px", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: "500", transition: "all 0.2s" },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+    gap: "16px",
+    padding: "24px",
   },
 };
 
-export default ProductCard;
+export default Home;

@@ -29,7 +29,7 @@ function Wishlist() {
             </Link>
             <div style={styles.info}>
               <p style={styles.name}>{item.name}</p>
-              <p style={styles.price}>₹{(item.price * 83).toFixed(0)}</p>
+              <p style={styles.price}>NPR{(item.price * 83).toFixed(0)}</p>
             </div>
             <div style={styles.actions}>
               <button

@@ -8,40 +8,45 @@ function ProductCard({ product }) {
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
   const { user } = useAuth();
+
+  // Guard: don't render if product is missing or malformed
+  if (!product || !product.id) return null;
+
   const wishlisted = isWishlisted(product.id);
 
   const handleWishlist = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (!user) return;
     toggleWishlist(product);
   };
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     addToCart(product);
   };
 
-  // Generate a stable star rating from price (just for display)
-  const rating = (((product.price % 2) + 3.5)).toFixed(1);
-  const stars = Math.round(parseFloat(rating));
+  const rating = ((product.price % 2) + 3.5).toFixed(1);
+  const stars = Math.min(5, Math.max(1, Math.round(parseFloat(rating))));
+  const priceInr = (product.price * 83).toFixed(0);
 
   return (
     <Link to={`/product/${product.id}`} style={styles.cardLink}>
       <div style={styles.card}>
+
         {/* Wishlist Button */}
         {user && (
           <button
             onClick={handleWishlist}
-            style={{
-              ...styles.wishlistBtn,
-              color: wishlisted ? "#ff4757" : "#aaa",
-            }}
+            style={{ ...styles.wishlistBtn, color: wishlisted ? "#ff4757" : "#bbb" }}
+            title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
             {wishlisted ? "♥" : "♡"}
           </button>
         )}
 
-        {/* Product Image */}
+        {/* Image */}
         <div style={styles.imageWrap}>
           <img src={product.image} alt={product.name} style={styles.image} />
         </div>
@@ -56,8 +61,8 @@ function ProductCard({ product }) {
           </div>
 
           <div style={styles.priceRow}>
-            <span style={styles.price}>₹{(product.price * 83).toFixed(0)}</span>
-            <span style={styles.priceUsd}>(${product.price})</span>
+            <span style={styles.price}>NPR{priceInr}</span>
+            <span style={styles.priceUsd}>${product.price}</span>
           </div>
         </div>
 
@@ -74,6 +79,7 @@ const styles = {
   cardLink: {
     textDecoration: "none",
     color: "inherit",
+    display: "flex",
   },
   card: {
     position: "relative",
@@ -86,9 +92,8 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
-    transition: "transform 0.2s, box-shadow 0.2s",
+    width: "100%",
     cursor: "pointer",
-    height: "100%",
   },
   wishlistBtn: {
     position: "absolute",
@@ -96,7 +101,7 @@ const styles = {
     right: "12px",
     background: "none",
     border: "none",
-    fontSize: "20px",
+    fontSize: "22px",
     cursor: "pointer",
     lineHeight: 1,
     padding: 0,
@@ -107,10 +112,10 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
-    borderRadius: "8px",
     backgroundColor: "#f9f9f9",
+    borderRadius: "8px",
     padding: "8px",
+    overflow: "hidden",
   },
   image: {
     maxWidth: "100%",
@@ -172,7 +177,6 @@ const styles = {
     borderRadius: "7px",
     fontSize: "13px",
     fontWeight: "600",
-    transition: "background-color 0.2s",
   },
 };
 

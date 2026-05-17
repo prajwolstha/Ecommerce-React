@@ -71,10 +71,10 @@ function Checkout() {
               <h3 style={styles.cardTitle}>Shipping Information</h3>
               <div style={styles.grid2}>
                 {[
-                  { name: "name", label: "Full Name", placeholder: "John Doe" },
-                  { name: "email", label: "Email", placeholder: "john@email.com", type: "email" },
-                  { name: "phone", label: "Phone", placeholder: "+91 98765 43210", type: "tel" },
-                  { name: "pincode", label: "Pincode", placeholder: "110001" },
+                  { name: "name", label: "Full Name", placeholder: "Prajwol shrestha" },
+                  { name: "email", label: "Email", placeholder: "prajwol@email.com", type: "email" },
+                  { name: "phone", label: "Phone", placeholder: "+977 9826664694", type: "tel" },
+                  { name: "pincode", label: "Pincode", placeholder: "44600" },
                 ].map(({ name, label, placeholder, type = "text" }) => (
                   <div key={name}>
                     <label style={styles.label}>{label}</label>
@@ -103,8 +103,8 @@ function Checkout() {
               </div>
               <div style={styles.grid2}>
                 {[
-                  { name: "city", label: "City", placeholder: "Delhi" },
-                  { name: "state", label: "State", placeholder: "Delhi" },
+                  { name: "city", label: "City", placeholder: "Kathamandu" },
+                  { name: "state", label: "State", placeholder: "Bagmati" },
                 ].map(({ name, label, placeholder }) => (
                   <div key={name}>
                     <label style={styles.label}>{label}</label>
@@ -180,7 +180,7 @@ function Checkout() {
                 {cartItems.map((item) => (
                   <div key={item.id} style={styles.reviewItem}>
                     <span>{item.name.substring(0, 30)}...</span>
-                    <span>×{item.quantity} = ₹{(item.price * 83 * item.quantity).toFixed(0)}</span>
+                    <span>×{item.quantity} = NPR{(item.price * 83 * item.quantity).toFixed(0)}</span>
                   </div>
                 ))}
               </div>
@@ -205,17 +205,17 @@ function Checkout() {
                   <p style={styles.summaryName}>{item.name.substring(0, 25)}...</p>
                   <p style={styles.summaryQty}>Qty: {item.quantity}</p>
                 </div>
-                <span style={styles.summaryPrice}>₹{(item.price * 83 * item.quantity).toFixed(0)}</span>
+                <span style={styles.summaryPrice}>NPR{(item.price * 83 * item.quantity).toFixed(0)}</span>
               </div>
             ))}
             <div style={styles.divider} />
-            <div style={styles.summaryRow}><span>Subtotal</span><span>₹{(totalPrice * 83).toFixed(0)}</span></div>
-            <div style={styles.summaryRow}><span>Delivery</span><span>{deliveryFee === 0 ? <span style={{ color: "#22c55e" }}>FREE</span> : `₹${deliveryFee * 83}`}</span></div>
-            <div style={styles.summaryRow}><span>GST (18%)</span><span>₹{(tax * 83).toFixed(0)}</span></div>
+            <div style={styles.summaryRow}><span>Subtotal</span><span>NPR{(totalPrice * 83).toFixed(0)}</span></div>
+            <div style={styles.summaryRow}><span>Delivery</span><span>{deliveryFee === 0 ? <span style={{ color: "#22c55e" }}>FREE</span> : `NPR${deliveryFee * 83}`}</span></div>
+            <div style={styles.summaryRow}><span>GST (18%)</span><span>NPR{(tax * 83).toFixed(0)}</span></div>
             <div style={styles.divider} />
             <div style={{ ...styles.summaryRow, fontWeight: "700", fontSize: "16px" }}>
               <span>Total</span>
-              <span>₹{(grandTotal * 83).toFixed(0)}</span>
+              <span>NPR{(grandTotal * 83).toFixed(0)}</span>
             </div>
             {deliveryFee === 0 && (
               <p style={styles.freeShip}>🎉 You qualify for free delivery!</p>
